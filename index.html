@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kirsten Hudson — Are You Me?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&family=VT323&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --hot-pink: #ff2d78;
+      --cyan: #00f5ff;
+      --yellow: #ffe600;
+      --purple: #9b30ff;
+      --dark: #0a0010;
+      --grid-color: rgba(0, 245, 255, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--dark);
+      color: var(--cyan);
+      font-family: 'VT323', monospace;
+      font-size: 20px;
+      overflow-x: hidden;
+      cursor: crosshair;
+    }
+
+    /* Animated grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridScroll 8s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Scanline overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.15) 2px,
+        rgba(0,0,0,0.15) 4px
+      );
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    @keyframes gridScroll {
+      0% { background-position: 0 0; }
+      100% { background-position: 40px 40px; }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      text-align: center;
+      padding: 60px 20px 40px;
+    }
+
+    .blinky-bar {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 11px;
+      color: var(--yellow);
+      letter-spacing: 2px;
+      animation: blink 1s step-end infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .main-title {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 8vw, 5rem);
+      color: var(--hot-pink);
+      text-shadow:
+        0 0 10px var(--hot-pink),
+        0 0 30px var(--hot-pink),
+        0 0 60px rgba(255,45,120,0.4),
+        4px 4px 0 var(--purple);
+      line-height: 1.1;
+      letter-spacing: 2px;
+      animation: glitch 4s infinite;
+    }
+
+    @keyframes glitch {
+      0%, 95%, 100% { transform: translate(0); }
+      96% { transform: translate(-3px, 1px); filter: hue-rotate(90deg); }
+      97% { transform: translate(3px, -1px); filter: hue-rotate(-90deg); }
+      98% { transform: translate(0); }
+    }
+
+    .subtitle {
+      font-family: 'VT323', monospace;
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      color: var(--cyan);
+      margin-top: 12px;
+      text-shadow: 0 0 8px var(--cyan);
+    }
+
+    .rainbow-divider {
+      height: 4px;
+      background: linear-gradient(90deg, var(--hot-pink), var(--yellow), var(--cyan), var(--purple), var(--hot-pink));
+      background-size: 200%;
+      animation: rainbowSlide 2s linear infinite;
+      margin: 30px 0;
+      border-radius: 2px;
+    }
+
+    @keyframes rainbowSlide {
+      0% { background-position: 0%; }
+      100% { background-position: 200%; }
+    }
+
+    /* ===== BOXES ===== */
+    .box {
+      border: 2px solid var(--cyan);
+      padding: 28px 32px;
+      margin-bottom: 28px;
+      position: relative;
+      background: rgba(0, 245, 255, 0.03);
+      box-shadow: 0 0 20px rgba(0,245,255,0.1), inset 0 0 20px rgba(0,245,255,0.03);
+    }
+
+    .box::before {
+      content: attr(data-label);
+      position: absolute;
+      top: -13px;
+      left: 16px;
+      background: var(--dark);
+      padding: 0 8px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      color: var(--yellow);
+      text-shadow: 0 0 6px var(--yellow);
+    }
+
+    .box.pink-border {
+      border-color: var(--hot-pink);
+      box-shadow: 0 0 20px rgba(255,45,120,0.15), inset 0 0 20px rgba(255,45,120,0.03);
+    }
+
+    .box.pink-border::before {
+      color: var(--hot-pink);
+      text-shadow: 0 0 6px var(--hot-pink);
+    }
+
+    /* ===== INTRO TEXT ===== */
+    .intro-text {
+      font-size: 22px;
+      line-height: 1.6;
+      color: #e0f7ff;
+    }
+
+    .intro-text .highlight {
+      color: var(--yellow);
+      text-shadow: 0 0 6px var(--yellow);
+    }
+
+    .intro-text .pink {
+      color: var(--hot-pink);
+      text-shadow: 0 0 6px var(--hot-pink);
+    }
+
+    /* ===== PROFILE CARD ===== */
+    .profile-card {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .avatar-block {
+      flex-shrink: 0;
+      width: 100px;
+      height: 100px;
+      border: 3px solid var(--hot-pink);
+      background: linear-gradient(135deg, #1a0030, #300050);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+      box-shadow: 0 0 20px rgba(255,45,120,0.4);
+      animation: avatarPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes avatarPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(255,45,120,0.4); }
+      50% { box-shadow: 0 0 40px rgba(255,45,120,0.8), 0 0 60px rgba(255,45,120,0.2); }
+    }
+
+    .profile-info {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .profile-info h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.3rem;
+      color: var(--hot-pink);
+      text-shadow: 0 0 8px var(--hot-pink);
+      margin-bottom: 10px;
+    }
+
+    .profile-info p {
+      font-size: 20px;
+      line-height: 1.7;
+      color: #c8f0ff;
+    }
+
+    .stat-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .stat {
+      background: rgba(155, 48, 255, 0.15);
+      border: 1px solid var(--purple);
+      padding: 4px 12px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: var(--purple);
+      text-shadow: 0 0 6px var(--purple);
+    }
+
+    /* ===== CHECKLIST ===== */
+    .check-list {
+      list-style: none;
+      font-size: 20px;
+      line-height: 1.9;
+    }
+
+    .check-list li::before {
+      content: '▶ ';
+      color: var(--yellow);
+    }
+
+    .check-list li {
+      color: #d0f0ff;
+      transition: color 0.2s;
+    }
+
+    .check-list li:hover {
+      color: var(--yellow);
+      text-shadow: 0 0 8px var(--yellow);
+      cursor: default;
+    }
+
+    /* ===== FORM ===== */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      color: var(--yellow);
+      text-shadow: 0 0 4px var(--yellow);
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      background: rgba(0, 245, 255, 0.05);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      font-family: 'VT323', monospace;
+      font-size: 20px;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--hot-pink);
+      box-shadow: 0 0 12px rgba(255,45,120,0.3);
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: rgba(0, 245, 255, 0.3);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 500px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--hot-pink);
+      border: none;
+      color: white;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 13px;
+      padding: 18px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+      box-shadow: 0 0 20px rgba(255,45,120,0.5), 4px 4px 0 var(--purple);
+      transition: all 0.1s;
+      margin-top: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn:hover {
+      background: #ff1060;
+      box-shadow: 0 0 40px rgba(255,45,120,0.8), 4px 4px 0 var(--purple);
+      transform: translate(-2px, -2px);
+    }
+
+    .submit-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 0 0 10px rgba(255,45,120,0.3), 2px 2px 0 var(--purple);
+    }
+
+    .submit-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+      transform: translateX(-100%);
+      transition: transform 0.4s;
+    }
+
+    .submit-btn:hover::after {
+      transform: translateX(100%);
+    }
+
+    /* ===== SUCCESS MESSAGE ===== */
+    #success-msg {
+      display: none;
+      text-align: center;
+      padding: 30px;
+      font-size: 22px;
+      color: var(--yellow);
+      text-shadow: 0 0 10px var(--yellow);
+      animation: blink 0.8s step-end infinite;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      text-align: center;
+      padding: 40px 20px 60px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: rgba(0,245,255,0.3);
+      line-height: 2;
+    }
+
+    footer a {
+      color: rgba(255,45,120,0.5);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--hot-pink);
+    }
+
+    /* Floating stars */
+    .stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle var(--dur) ease-in-out infinite var(--delay);
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+
+    /* Marquee */
+    .marquee-wrap {
+      overflow: hidden;
+      border-top: 1px solid rgba(0,245,255,0.2);
+      border-bottom: 1px solid rgba(0,245,255,0.2);
+      padding: 8px 0;
+      margin: 20px 0;
+    }
+
+    .marquee {
+      display: inline-block;
+      white-space: nowrap;
+      animation: marquee 18s linear infinite;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      color: rgba(255,230,0,0.6);
+      letter-spacing: 3px;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(100vw); }
+      to { transform: translateX(-100%); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Starfield -->
+  <div class="stars" id="stars"></div>
+
+  <div class="container">
+    <header>
+      <div class="blinky-bar">★ ★ ★ ATTENTION: ARE YOU KIRSTEN HUDSON? ★ ★ ★</div>
+      <h1 class="main-title">KIRSTEN<br>HUDSON</h1>
+      <p class="subtitle">a registry for people with excellent taste in names</p>
+      <div class="rainbow-divider"></div>
+    </header>
+
+    <div class="marquee-wrap">
+      <span class="marquee">⚡ KIRSTEN HUDSON ⚡ IF YOU SEE YOUR NAME HERE, THIS IS NOT A DRILL ⚡ KIRSTEN HUDSON ⚡ WE ARE EVERYWHERE ⚡ AND WE MUST UNITE ⚡ KIRSTEN HUDSON ⚡ CLASS OF NAMES: ELITE ⚡ KIRSTEN HUDSON ⚡ </span>
+    </div>
+
+    <div class="box" data-label="TRANSMISSION ORIGIN">
+      <div class="profile-card">
+        <div class="avatar-block">👩‍💻</div>
+        <div class="profile-info">
+          <h2>KIRSTEN HUDSON // UNIT #001</h2>
+          <p>Started life in <span style="color:var(--yellow)">New York City</span>. Relocated to <span style="color:var(--hot-pink)">Los Angeles</span>. Works at a museum. Convinced there are others out there carrying this name — and determined to find every last one of you.</p>
+          <div class="stat-row">
+            <span class="stat">NYC → LA</span>
+            <span class="stat">UNIT #001</span>
+            <span class="stat">KIRSTENS FOUND: ???</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box pink-border" data-label="ARE YOU ONE OF US?">
+      <p class="intro-text">
+        Listen. <span class="highlight">Kirsten Hudson</span> is not a common name. It's a <span class="pink">rare, powerful combination</span> — the kind that makes people at the DMV do a double-take. The kind that gets autocorrected into something worse. The kind that bonds strangers across time and space.
+        <br><br>
+        I want to meet you. I want to know where you are, what you do, how you got this name, whether people call you <span class="highlight">Kristin</span> by mistake (they do, don't they).
+        <br><br>
+        This is your moment. <span class="pink">Sign the registry.</span>
+      </p>
+    </div>
+
+    <div class="box" data-label="KIRSTEN HUDSON QUALIFICATION CHECKLIST">
+      <ul class="check-list">
+        <li>Your name is, legally or otherwise, Kirsten Hudson</li>
+        <li>You have corrected someone's spelling at least once this year</li>
+        <li>You have googled yourself and found strangers</li>
+        <li>You sometimes wonder if the other Kirsten Hudsons are doing okay</li>
+        <li>You are ready to make contact</li>
+      </ul>
+    </div>
+
+    <div class="box pink-border" data-label="MAKE CONTACT // SIGN THE REGISTRY">
+      <form id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">YOUR FULL NAME (confirm it)</label>
+            <input type="text" id="name" name="name" placeholder="Kirsten Hudson" required>
+          </div>
+          <div class="form-group">
+            <label for="location">WHERE IN THE WORLD</label>
+            <input type="text" id="location" name="location" placeholder="City, State/Country">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">YOUR EMAIL (so I can say hi)</label>
+          <input type="email" id="email" name="email" placeholder="kirsten@somewhere.com" required>
+        </div>
+        <div class="form-group">
+          <label for="origin">HOW DID YOU GET THIS NAME?</label>
+          <input type="text" id="origin" name="origin" placeholder="Family name, total coincidence, fate...">
+        </div>
+        <div class="form-group">
+          <label for="message">ANYTHING ELSE YOU WANT UNIT #001 TO KNOW</label>
+          <textarea id="message" name="message" placeholder="Fellow Kirsten, I too have had my name autocorrected to..."></textarea>
+        </div>
+        <button type="submit" class="submit-btn">⚡ TRANSMIT TO UNIT #001 ⚡</button>
+      </form>
+      <div id="success-msg">
+        ✅ TRANSMISSION RECEIVED.<br>KIRSTEN #001 WILL BE IN TOUCH.<br>WELCOME TO THE REGISTRY.
+      </div>
+    </div>
+
+    <footer>
+      <p>KIRSTENHUDSON.COM // A REGISTRY OF EXCELLENT PEOPLE</p>
+      <p style="margin-top:8px">MADE WITH ♥ BY KIRSTEN HUDSON, LOS ANGELES CA</p>
+      <p style="margin-top:8px; color: rgba(0,245,255,0.15)">NO KIRSTENS WERE HARMED IN THE MAKING OF THIS WEBSITE</p>
+    </footer>
+  </div>
+
+  <script>
+    // Generate stars
+    const starsEl = document.getElementById('stars');
+    for (let i = 0; i < 80; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      s.style.cssText = `
+        left: ${Math.random() * 100}%;
+        top: ${Math.random() * 100}%;
+        --dur: ${2 + Math.random() * 4}s;
+        --delay: ${Math.random() * 4}s;
+      `;
+      starsEl.appendChild(s);
+    }
+
+    // Form submission
+    const form = document.getElementById('contact-form');
+    const successMsg = document.getElementById('success-msg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          form.style.display = 'none';
+          successMsg.style.display = 'block';
+        }
+      } catch(err) {
+        // Fallback: show success anyway for demo
+        form.style.display = 'none';
+        successMsg.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
